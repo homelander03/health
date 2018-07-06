@@ -2,7 +2,7 @@
 // See the Send API reference
 // https://developers.facebook.com/docs/messenger-platform/send-api-reference
 const request = require('request');
-const Config = require('./const.js');
+const CONFIG = require('./const.js');
 module.exports = (function(){
     let facebook_function = {
         //Sending request for sender details(name)
@@ -11,7 +11,7 @@ module.exports = (function(){
             request({
                     url: "https://graph.facebook.com/v2.6/" + sender,
                     qs: {
-                        access_token : Config.FB_PAGE_TOKEN
+                        access_token : CONFIG.FB_PAGE_TOKEN
                     },
                     method: "GET",
                 },
@@ -37,7 +37,7 @@ module.exports = (function(){
             request(
                 {
                     url: 'https://graph.facebook.com/v2.6/me/messages',
-                    qs: {access_token: Config.FB_PAGE_TOKEN},
+                    qs: {access_token: CONFIG.FB_PAGE_TOKEN},
                     method: 'POST',
                     json: {
                         recipient: {id: sender},
