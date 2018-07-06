@@ -3,19 +3,19 @@
 let express = require("express");
 let router = express.Router();
 //Get Bot and Configurations
-const Bot_Questions = require("./bot_questions.js");
-const Config = require("./const.js");
-const Fb = require("./facebook.js");
+const BOT_QUESTIONS = require("./bot_questions.js");
+const CONFIG = require("./const.js");
+const FB = require("./facebook.js");
 
 router.get('/', function(req,res) {
 	console.log("In the function");
 	res.send("Hi Im Running");
 });
 
-router.get('/webhook',function(req,res){
+router.get('/health/webhook/',function(req,res){
 	console.log("In get");
 	//Verifying the FB token
-	if(!Config.FB_VERIFY_TOKEN){
+	if(!CONFIG.FB_VERIFY_TOKEN){
 		throw new Error("Missing Facebook token");
 	}
 	//hub.verify token The verify_token value that you will specify when you enable the Webhook for your app.
@@ -29,11 +29,5 @@ router.get('/webhook',function(req,res){
 	}
 });
 
-router.post('/health/webhook',function(req,res){
-	if(Fb.facebook_function){
-		let name = Fb.facebook_function;
-		res.send("Hi"+ name +"Welcome" );
-	}
-});
 module.exports = router;
 
