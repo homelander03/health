@@ -3,9 +3,9 @@
 let express = require("express");
 let router = express.Router();
 //Get Bot and Configurations
-const Bot_Questions = require("./operations/bot_questions.js");
-const Config = require("./config/const.js");
-const Fb = require("./operations/facebook.js");
+const Bot_Questions = require("./bot_questions.js");
+const Config = require("./const.js");
+const Fb = require("./facebook.js");
 
 router.get('/', function(req,res) {
 	console.log("In the function");
@@ -30,11 +30,9 @@ router.get('/webhook',function(req,res){
 });
 
 router.post('/health/webhook',function(req,res){
-	if(!Fb.facebook_function){
-		throw new Error("Name not found");
-	}
-	else{
-		res.send("Hi"+Fb.facebook_function+"Welcome");
+	if(Fb.facebook_function){
+		let name = Fb.facebook_function;
+		res.send("Hi"+ name +"Welcome" );
 	}
 });
 module.exports = router;
