@@ -21,7 +21,8 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(cors());
 app.use('/health/', health_bot);
 
-const server = app.listen(9090, function () {
+let port = process.env.PORT || 9090;
+const server = app.listen(port, function () {
     let host = server.address().address;
     let port = server.address().port;
     console.log("Example app listening at http://%s:%s", host, port);
