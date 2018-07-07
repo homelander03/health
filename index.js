@@ -28,6 +28,9 @@ router.get('/health/webhook/',function(req,res){
 		res.sendStatus(400);//sending the HTTP response status 400 for bad request.
 	}
 });
+router.post('/webhook/',function(req,res){
+	
+});
 
 module.exports = router;
 
