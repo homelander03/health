@@ -12,11 +12,8 @@ router.get('/', function(req,res) {
 	res.send("Hi Im Running");
 });
 
-<<<<<<< HEAD
-router.get('/health/webhook',function(req,res){
-=======
+
 router.get('/health/webhook/',function(req,res){
->>>>>>> bee616dfbba9a11e81bd57f2d987044b32daed86
 	console.log("In get");
 	//Verifying the FB token
 	if(!CONFIG.FB_VERIFY_TOKEN){
@@ -25,7 +22,7 @@ router.get('/health/webhook/',function(req,res){
 	//hub.verify token The verify_token value that you will specify when you enable the Webhook for your app.
     //Respond with the hub.challenge value. This let's us know that your endpoint is configured correctly and that the response is authentic.
   	//Verify the hub.verify_token matches the value you supplied when enabling the Webhook. This is a security check to authenticate the request and identify the Webhook.
-  	if (req.query['hub.mode'] === 'subscribe' && req.query['hub_verify_token'] === Config.FB_VERIFY_TOKEN){
+  	if (req.query['hub.mode'] === 'subscribe' && req.query['hub_verify_token'] === CONFIG.FB_VERIFY_TOKEN){
   		res.send(req.query('hub.challenge'));
   	}
 	else{
@@ -33,15 +30,11 @@ router.get('/health/webhook/',function(req,res){
 	}
 });
 
-<<<<<<< HEAD
+
 router.post('/health/webhook',function(req,res){
-	if(Fb.facebook_function){
-		let name = Fb.facebook_function;
-		res.send("Hi"+ name +"Welcome" );
+	if(BOT_QUESTIONS)
+	{
+		res.send();
 	}
 });
-
-=======
->>>>>>> bee616dfbba9a11e81bd57f2d987044b32daed86
 module.exports = router;
-

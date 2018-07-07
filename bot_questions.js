@@ -34,11 +34,11 @@ module.exports = (function(){
     		};
     		return get_started;
     	},
-        textMessages : function(txt)
+        textMessages : function(text)
         {
             let message =
                 {
-                    text: txt
+                    text: text
                 };
             return message;
         },
@@ -51,4 +51,4 @@ module.exports = (function(){
         },
     };
         return bot_questions;
-};
+});
