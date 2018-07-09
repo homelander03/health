@@ -37,7 +37,7 @@ module.exports = (function(){
 			else
 				return [];
 		},
-		clearContext : function(session_id){
+	/*	clearContext : function(session_id){
 			let current_user_context = sessions_info.getContext(session_id);
 			let new_user_context = JSON.parse(JSON.stringify(context_structure));
 			if(current_user_context.hasOwnProperty("user_profile"))
@@ -60,13 +60,16 @@ module.exports = (function(){
 			new_user_context["chat_id"] = current_user_context["chat_id"]+1;
 	        console.log(new_user_context[]);
 	        sessions_info.storeContext(session_id, new_user_context);
-		},
-		getContext: (session_id)=> {
+		}, */
+		getContext: function(session_id) {
 			if(sessions.hasOwnProperty(session_id))
 				return sessions[session_id];
 			else
 				return {}
 		},
+		storeContext: function(session_id,user_context) {
+			sessions[session_id] = user_context;
+		}
 	}
 	return sessions_info;
 });
