@@ -6,8 +6,9 @@ const CONFIG = require('./const.js');
 module.exports = (function(){
     let facebook_function = {
         //Sending request for sender details(name)
-        getName : (sender,callback) =>
+        getName : function(sender,callback)
         {
+            console.log("fb get name");
             request({
                     url: "https://graph.facebook.com/v2.6/" + sender,
                     qs: {
@@ -32,7 +33,7 @@ module.exports = (function(){
             );
         },
         //sending message request to facebook via graph api
-        sendRequest : (sender,messageData) =>
+        sendRequest : function(sender,messageData)
         {
             request(
                 {
@@ -53,6 +54,30 @@ module.exports = (function(){
                 }
             );
         },
+        sendBubble : function(sender)
+        {
+            request(
+                {
+                    url: 'https://graph.facebook.com/v2.6/me/messages',
+                    qs: {access_token: CONFIG.FB_PAGE_TOKEN},
+                    method: 'POST',
+                    json: {
+                        recipient: {id: sender},
+                        "sender_action": "typing_on"
+                    }
+                },
+                function (error, response) {
+                    if (error)
+                    {
+                        console.log('Error sending message: ', error);
+                    }
+                    else if (response.body.error)
+                    {
+                        console.log('Error: ', response.body.error);
+                    }
+                }
+            );
+        }
         
     };
     return facebook_function;
