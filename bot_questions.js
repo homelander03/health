@@ -81,38 +81,38 @@ module.exports = (function()
         title : "Aarogyam 1.2 (60 Tests) ₹ 999/-",
         subtitle : "A popular body checkup spanning 60 important tests including diabetes risk and complete blood count.",
         url : "https://petersfancybrownhats.com/view?item=103",
-        payload : "Aarogyam 1.2 (60 Tests)"
+        payload : "Aarogyam 1.2 (60 Tests) ₹ 999/-"
 
       },
       {
         title : "Aarogyam 1.2 Advanced (70 Tests) ₹ 1199/-",
         subtitle : "A recommended full body checkup that also includes Urinogram, in addition to all the essential tests in Aarogyam 1.2.",
         url : "https://petersfancybrownhats.com/view?item=103",
-        payload : "Aarogyam 1.2 Advanced (70 Tests)"
+        payload : "Aarogyam 1.2 Advanced (70 Tests) ₹ 1199/-"
       },
       {
         title : "Aarogyam 1.3 (63 Tests) ₹ 1499/-",
         subtitle : "Our most popular full body checkup, that includes all tests in Aarogyam 1.2 and also checks for deficiency of highly important Vitamins - B12 and D Total.",
         url : "https://petersfancybrownhats.com/view?item=103",
-        payload : "Aarogyam 1.3 (63 Tests)"
+        payload : "Aarogyam 1.3 (63 Tests) ₹ 1499/-"
       },
       {
         title : "Aarogyam 1.3 Advanced (73 Tests) ₹ 1699/-",
         subtitle : "An advanced full body checkup that also includes Urinogram, in addition to all the essential tests in Aarogyam 1.3. A must test for comprehensive evaluation of health.",
         url : "https://petersfancybrownhats.com/view?item=103",
-        payload : "Aarogyam 1.3 Advanced (73 Tests)"
+        payload : "Aarogyam 1.3 Advanced (73 Tests) ₹ 1699/-"
       },
       {
         title : "Aarogyam 1.7 (88 Tests) ₹ 2499/-",
         subtitle : "Our most advanced and popular health checkup is a must for those above 40 years. It tests you for Arthritis risk and 9 toxic elements along with all tests in Aarogyam 1.4.",
         url : "https://petersfancybrownhats.com/view?item=103",
-        payload : "Aarogyam 1.7 (88 Tests)"        
+        payload : "Aarogyam 1.7 (88 Tests) ₹ 2499/-"        
       },
       {
         title : "Aarogyam 1.7 Advanced (98 Tests) ₹ 2699/-",
         subtitle : "A multidisciplinary profile which screens for of all tests in Aarogyam 1.7 + 10 Urine Tests.",
         url : "https://petersfancybrownhats.com/view?item=103",
-        payload : "Aarogyam 1.7 Advanced (98 Tests)"
+        payload : "Aarogyam 1.7 Advanced (98 Tests) ₹ 2699/-"
       }
       ]
       let keys = Object.keys(obj);
@@ -149,7 +149,6 @@ module.exports = (function()
           }
           return message;
     },
-
     askFullName : function()
     {
       let ask_name = {

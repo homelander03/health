@@ -1,8 +1,8 @@
 'use strict';
 
 const BOT_QUESTIONS = require('./bot_questions.js');
+const MYSQL = require('./mysqlQueries.js');
 const sessions = {};
-const timers = {};
 
 process.on('uncaughtException',function(error){
 	console.log(error.stack);
@@ -18,11 +18,53 @@ module.exports = (function(){
 		"email" : "",
 		"pincode" : "",
 		"address" : "",
+		"package" : "",
+		"timeslot":"",
 		"previous_question" : "",
 		"texttype" : "" ,
 		"bot_messages" : [],
 		"chat_id": 0
+	};
+	let storeUserInDB = function(session_id){
+		let user_context = sessions_info.getContext(session_id);
+		let insert_query = "insert into users(session_id,username,name,gender,age,mobile,email,pincode,address,package,chatid,date) values('"+session_id+"','"+user_context["username"]+"','"+user_context["name"]+"','"+user_context["gender"]+"','"+user_context["age"]+"','"+user_context["mobile"]+"','"+user_context["email"]+"','"+user_context["pincode"]+"','"+user_context["address"]+"','"+user_context["package"]+"','"+user_context["chat_id"]+"','"+user_context["date"]+"');";
+		console.log(insert_query);
+		MYSQL.sqlQuery("thyrocare", insert_query, function(inserted){
+			console.log("successfully inserted");
+            });
 	}
+	
+	let userDetailsApi = function(session_id){
+		let user_context = getContext(session_id);
+		  let var_data = {
+		  	"ADDRESS": user_context["address"],
+    		"BOOKED_BY": user_context["name"],
+    		"CUSTOMER_RATE": 100,
+   			"EMAIL": user_context["email"],
+    		"FASTING": null,
+    		"MOBILE": user_context["mobile"],
+    		"MODE": "PAY WHILE SAMPLE COLLECTION",
+    		"ORDERRESPONSE": {
+      			"PostOrderDataResponse" :
+        			{ 
+            			"AGE" : user_context["age"], 
+            			"GENDER" : user_context["gender"],
+            			"LEAD_ID" :"",
+            			"NAME" : user_context["name"]
+        			}
+    			},
+    		"ORDER_NO":"",
+    		"PAY_TYPE": "POSTPAID",
+    		"PRODUCT": user_context["package"],
+    		"REF_ORDERID": null,
+    		"REPORT_HARD_COPY": "NO",
+    		"RESPONSE": "",
+    		"RES_ID": "",
+    		"SERVICE_TYPE": "HOME COLLECTION",
+    		"STATUS": "YET TO ASSIGN"
+    	}
+    	return var_data;
+    }
 	//creating user context
 	let sessions_info = {
 		createSession : function(session_id){
@@ -37,32 +79,16 @@ module.exports = (function(){
 			else
 				return {};
 		},
-	/*	clearContext : function(session_id){
-			let current_user_context = sessions_info.getContext(session_id);
-			let new_user_context = JSON.parse(JSON.stringify(context_structure));
-			if(current_user_context.hasOwnProperty("user_profile"))
-			{
-				if(current_user_context.hasOwnProperty("name"))
-					new_user_context["name"] = current_user_context["name"];
-				if(current_user_context.hasOwnProperty("gender"))
-					new_user_context["gender"] = current_user_context["gender"];
-				if(current_user_context.hasOwnProperty("age"))
-					new_user_context["age"] = current_user_context["age"];
-				if(current_user_context.hasOwnProperty("mobile"))
-					new_user_context["mobile"] = current_user_context["mobile"];
-				if(current_user_context.hasOwnProperty("email"))
-					new_user_context["email"] = current_user_context["email"];
-				if(current_user_context.hasOwnProperty("pincode"))
-					new_user_context["pincode"] = current_user_context["pincode"];
-				if(current_user_context.hasOwnProperty("address"))
-					new_user_context["address"] = current_user_context["address"];
-			}
-			new_user_context["chat_id"] = current_user_context["chat_id"]+1;
-	        console.log(new_user_context[]);
-	        sessions_info.storeContext(session_id, new_user_context);
-		}, */
 		storeContext: function(session_id,user_context) {
 			sessions[session_id] = user_context;
+		},
+		clearContext : function(session_id){
+			let current_user_context = sessions_info.getContext(session_id);
+			let new_user_context = JSON.parse(JSON.stringify(context_structure));
+			new_user_context["username"] = current_user_context["username"];
+			new_user_context["chat_id"] = current_user_context["chat_id"]+1;
+	        console.log(new_user_context);
+	        sessions_info.storeContext(session_id, new_user_context);
 		},
 		getUserSessionState: function(session_id, callback) {
 			if(sessions.hasOwnProperty(session_id)) {
@@ -73,30 +99,7 @@ module.exports = (function(){
 				callback("no");
 			}
         },
-        clearContext: function(session_id) {
-			let current_user_context = sessions_info.getContext(session_id);
-			let new_user_context = JSON.parse(JSON.stringify(context_structure));
-			if(current_user_context.hasOwnProperty("name"))
-                new_user_context["name"] = current_user_context["name"];
-            if(current_user_context.hasOwnProperty("gender"))
-                new_user_context["gender"] = current_user_context["gender"];
-            if(current_user_context.hasOwnProperty("age"))
-                new_user_context["age"] = current_user_context["age"];
-            if(current_user_context.hasOwnProperty("mobile"))
-                new_user_context["mobile"] = current_user_context["mobile"];
-            if(current_user_context.hasOwnProperty("email"))
-                new_user_context["email"] = current_user_context["email"];
-            if(current_user_context.hasOwnProperty("pincode"))
-                new_user_context["pincode"] = current_user_context["pincode"];
-            if(current_user_context.hasOwnProperty("address"))
-                new_user_context["address"] = current_user_context["address"];
-            if(current_user_context.hasOwnProperty("previous_question"))
-                new_user_context["previous_question"] = current_user_context["previous_question"];
-
-	        new_user_context["chat_id"] = current_user_context["chat_id"]+1;
-	        console.log("new_user_context",new_user_context);
-	        sessions_info.storeContext(session_id, new_user_context);
-		},
+        storeUserInDB :storeUserInDB,
 	}
 	return sessions_info;
 })();

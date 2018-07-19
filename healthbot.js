@@ -10,7 +10,7 @@ function welcomeMessage(session_id,message)
 {
 		let user_context = SESSIONS.getContext(session_id);
 		//console.log(user_context);
-		FB.sendBubble(session_id);
+		//FB.sendBubble(session_id);
 		let welcome_message = BOT_QUESTIONS.welcomeMessage(user_context["username"]);
 		//console.log(welcome_message);
 		user_context["bot_messages"].push(welcome_message);
@@ -32,6 +32,7 @@ function extractUserMessage(session_id,messaging)
     user_message = messaging.postback.payload;
     console.log("Got Payload message "+ user_message);
     user_context["texttype"] = "payload";
+    user_context["package"] = user_message;
 	}
     else if(messaging.message) {
     // Yay! We got a new message!
@@ -60,7 +61,7 @@ function extractUserMessage(session_id,messaging)
         if(index<bot_messages.length)
         {
             setTimeout(function(){
-                FB.sendBubble(session_id);
+                //FB.sendBubble(session_id);
             },10);
             setTimeout(function(){
                 getMessage(bot_messages, index);
@@ -134,7 +135,7 @@ let previous_question_actions =
 	},
 	askGenderMessage : function(session_id,message){
 		let user_context = SESSIONS.getContext(session_id);
-		if(message == "male" || message == "female" || message == "other")
+		if(message == "male" || message == "female")
 		{
 			user_context["gender"] = message;
 			let ask_age = BOT_QUESTIONS.askAge();
@@ -247,12 +248,12 @@ let previous_question_actions =
 		if(message.trim().length!=0)
 		{
 			user_context["address"] = message;
+			let time = BOT_QUESTIONS.chooseTime(session_id);
+			user_context["bot_messages"].push(time);
+			user_context["previous_question"] = "timeSlot";
 			SESSIONS.storeContext(session_id,user_context);
-			let end_message = BOT_QUESTIONS.textMessage("Thanks for providing your details, Our representative will call you and inform the time for service");
-			user_context["bot_messages"].push(end_message);
-			user_context["previous_question"] = "resetSession";
 			sendBotMessages(session_id);
-			console.log("usercontext",user_context);
+			//console.log("usercontext",user_context);
 		}
 		else
 		{
@@ -263,18 +264,29 @@ let previous_question_actions =
 			sendBotMessages(session_id);
 		}
 	},
+	timeSlot : function(session_id,message){
+		let user_context = SESSIONS.getContext(session_id); 
+		if(user_context.hasOwnProperty("date_status")&&!user_context["date_status"]){
+			let time = BOT_QUESTIONS.chooseTime(session_id);
+			user_context["bot_messages"].push(time);
+			user_context["previous_question"] = "timeSlot";
+			SESSIONS.storeContext(session_id,user_context);
+			sendBotMessages(session_id);
+		}
+		else{
+			let user_context = SESSIONS.getContext(session_id);
+			user_context["timeSlot"] = message;
+			SESSIONS.storeContext(session_id,user_context);
+			SESSIONS.storeUserInDB(session_id);
+			let end_message = BOT_QUESTIONS.textMessage("Thanks for providing your details, Our representative will call you and inform the time for service");
+			user_context["bot_messages"].push(end_message);
+			user_context["previous_question"] = "resetSession";
+			SESSIONS.storeContext(session_id,user_context);
+		}
+	},
 	resetSession : function(session_id,message){
-		let user_context = SESSIONS.getContext(session_id);
-		if(user_context["previous_question"] == "resetSession")
-		{
-			let restart_message = welcomeMessage(session_id,message);
-			user_context["bot_messages"].push(restart_message);
-			user_context["chat_id"] = user_context["chat_id"]+1;
-		}
-		else
-		{
-			user_context["previous_question"] = "askAddressMessage";			
-		}
+		let user_context = SESSIONS.clearContext(session_id);
+		welcomeMessage(session_id,message);
 	}
 }
 

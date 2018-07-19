@@ -15,31 +15,38 @@ module.exports = (function(){
             SESSIONS.getUserSessionState(session_id, function(sessionResult) {
                 console.log("in user");
                 // getting fb user name
-                FB.getName(session_id, (name)=> {
-                    console.log("fbgetname",name);
                 if (sessionResult == "no") { // checking whether user sessions is previously existed or not
-                    console.log("name:", name);
-                    SESSIONS.createSession(session_id);
-                    let user_context = SESSIONS.getContext(session_id);
-                    user_context["username"] = name;
-                    SESSIONS.storeContext(session_id, user_context);
-                    BOT.welcomeMessage(session_id, messaging);
-                    } 
+                    FB.getName(session_id, (name)=> {
+                        console.log("fbgetname",name);
+                        console.log("name:", name);
+                        SESSIONS.createSession(session_id);
+                        let user_context = SESSIONS.getContext(session_id);
+                        user_context["username"] = name;
+                        SESSIONS.storeContext(session_id, user_context);
+                        BOT.welcomeMessage(session_id, messaging);
+                    });
+                } 
                 else if (sessionResult == "expired") { // checking whether session is expired or not
-                    console.log("name:", name);
-                    SESSIONS.createSession(session_id);
-                    let user_context = SESSIONS.getContext(session_id);
-                    user_context["username"] = name;
-                    SESSIONS.storeContext(session_id, user_context);
-                    BOT.welcomeMessage(session_id, messaging);
-                   }
-                   else{
-                       let msg = BOT.extractUserMessage(session_id,messaging);
-                       BOT.chatFlow(session_id,msg);
-                   }
-                });
+                    FB.getName(session_id, (name)=> {
+                        console.log("fbgetname",name);
+                        console.log("name:", name);
+                        SESSIONS.createSession(session_id);
+                        let user_context = SESSIONS.getContext(session_id);
+                        user_context["username"] = name;
+                        SESSIONS.storeContext(session_id, user_context);
+                        BOT.welcomeMessage(session_id, messaging);
+                    });
+                }
+                else{
+                    FB.getName(session_id, (name) => {
+                        let user_context = SESSIONS.getContext(session_id);
+                        user_context["username"] = name;
+                    });
+                    let msg = BOT.extractUserMessage(session_id,messaging);
+                    BOT.chatFlow(session_id,msg);
+                 }
             });
-        }
+        }   
     }
     return messages_function;
 })();
