@@ -6,7 +6,7 @@ module.exports = (function(){
       password : 'MEw9f.YL'
   };
   let runSqlQuery = function(database, query) {
-    return new Promise((revolve, reject)=>{
+    return new Promise(function(revolve, reject) {
       let connection = mysql.createConnection(db_config);
       connection.connect(function(connection_err) {
         if(connection_err) {

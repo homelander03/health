@@ -38,12 +38,8 @@ module.exports = (function(){
                     });
                 }
                 else{
-                    FB.getName(session_id, (name) => {
-                        let user_context = SESSIONS.getContext(session_id);
-                        user_context["username"] = name;
-                    });
-                    let msg = BOT.extractUserMessage(session_id,messaging);
-                    BOT.chatFlow(session_id,msg);
+                        let msg = BOT.extractUserMessage(session_id,messaging);
+                        BOT.chatFlow(session_id,msg);
                  }
             });
         }   

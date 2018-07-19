@@ -149,6 +149,7 @@ module.exports = (function()
           }
           return message;
     },
+
     askFullName : function()
     {
       let ask_name = {
@@ -176,17 +177,36 @@ module.exports = (function()
                       "title":"Female",
                       "payload":"female"
                     },
-                    {
-                      "type":"postback",
-                      "title":"Other",
-                      "payload":"other" 
-                    }
                     ]
                   }
                 }
               }
             
         return ask_gender;
+      },
+    chooseTime : function(session_id)
+    {
+      let ask_time = 
+      {
+            "attachment":{
+              "type":"template",
+              "payload":{
+                "template_type":"button",
+                  "text":"Please choose the tentative appointment date, slot availability may vary based on technician availability",
+                  "buttons":[
+                    {
+                      "type":"web_url",
+                      "title":"Choose date and time",
+                      "url":"https://prodx.in/thyro-health/date-picker?session_id="+session_id,
+                      "webview_height_ratio": "full",
+                      "messenger_extensions": true,
+                    },
+                    ]
+                  }
+                }
+              }
+            
+        return ask_time;
       },
       askAge : function()
       {
@@ -219,7 +239,7 @@ module.exports = (function()
       askAddress : function()
       {
         let ask_address = {
-          "text" : "Please provide your address"
+          "text" : "Please provide your complete address (H.No, Street, Locality, Landmark)"
         };
         return ask_address;
       },
